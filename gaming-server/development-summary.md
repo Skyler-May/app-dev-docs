@@ -213,6 +213,69 @@ POST   /api/auth/test-login     # 测试登录接口
 - ✅ 修复PostgreSQL连接配置
 - ✅ 修复API请求体解析问题
 
+## ✅ 第一阶段重构完成
+
+- ✅ 创建了完整的角色与权限数据模型（Role, Permission, RoleType）
+- ✅ 更新了用户实体，添加了角色关联
+- ✅ 创建了用户角色关联实体（UserRole）
+- ✅ 创建了审计日志实体（AuditLog）
+- ✅ 创建了JPA Repository（RoleRepository, UserRoleRepository）
+- ✅ 创建了数据库迁移脚本（V2__add_role_permission_tables.sql）
+- ✅ 所有代码编译通过
+
+## ✅ 第二阶段重构完成
+
+- ✅ 更新了 CustomUserDetailsService 加载用户角色和权限
+- ✅ 创建了 PermissionService 权限服务
+- ✅ 更新了 AuthService 使用真实的权限信息
+- ✅ 创建了 SecurityUtils 安全工具类
+- ✅ 修复了所有编译错误
+- ✅ 项目成功启动
+
+## ✅ 第三阶段重构完成
+
+- ✅ 创建了权限注解（@RequiresPermissions, @RequiresRoles）
+- ✅ 创建了权限验证切面（PermissionAspect）
+- ✅ 更新了安全配置（SecurityConfig）支持方法级权限控制
+- ✅ 创建了测试权限控制器（TestPermissionController）
+- ✅ 创建了管理员控制器（AdminController）
+- ✅ 修复了所有编译错误
+- ✅ 项目成功启动
+
+## 🎉 重构完成总结
+
+### **1. 数据模型层**
+
+- User - 用户实体，关联多个角色
+- Role - 角色实体，包含权限集合
+- UserRole - 用户角色关联
+- AuditLog - 审计日志
+
+### **2. 权限系统**
+
+- Permission - 权限枚举（细粒度权限控制）
+- RoleType - 角色类型枚举（SUPER_ADMIN, ADMIN, AGENT, USER）
+- PermissionService - 权限服务
+
+### **3. 安全与认证**
+
+- CustomUserDetailsService - 加载用户角色和权限
+- JwtTokenProvider - JWT Token包含权限信息
+- SecurityUtils - 安全工具类
+
+### **4. 权限控制**
+
+- @RequiresPermissions - 权限验证注解
+- @RequiresRoles - 角色验证注解
+- PermissionAspect - 权限验证切面
+
+### **5. API分层**
+
+- 公开API：/api/auth/**, /api/ping, /api/health
+- 用户API：/api/users/**（需要相应权限）
+- 管理员API：/api/admin/**（需要ADMIN角色）
+- 测试API：/api/test/**（验证权限控制）
+
 ## 📊 项目结构更新
 
 ```text
@@ -232,8 +295,8 @@ gaming-server
 ├─ gradlew.bat
 ├─ logs
 │  └─ gaming-server.log
+├─ qodana.yaml
 ├─ README.md
-├─ simple-test.ps1
 ├─ src
 │  ├─ main
 │  │  ├─ kotlin
@@ -241,6 +304,9 @@ gaming-server
 │  │  │     └─ gaming
 │  │  │        └─ server
 │  │  │           ├─ common
+│  │  │           │  ├─ annotation
+│  │  │           │  │  ├─ PermissionAspect.kt
+│  │  │           │  │  └─ RequiresPermissions.kt
 │  │  │           │  ├─ domain
 │  │  │           │  │  └─ BaseEntity.kt
 │  │  │           │  ├─ exception
@@ -250,6 +316,7 @@ gaming-server
 │  │  │           │  │  ├─ ApiResponse.kt
 │  │  │           │  │  └─ ResultCode.kt
 │  │  │           │  ├─ security
+│  │  │           │  │  └─ SecurityUtils.kt
 │  │  │           │  └─ util
 │  │  │           │     └─ JwtTokenProvider.kt
 │  │  │           ├─ config
@@ -267,11 +334,19 @@ gaming-server
 │  │  │           ├─ features
 │  │  │           │  ├─ auth
 │  │  │           │  │  ├─ controller
+│  │  │           │  │  │  ├─ AdminController.kt
 │  │  │           │  │  │  ├─ AuthController.kt
+│  │  │           │  │  │  ├─ TestPermissionController.kt
 │  │  │           │  │  │  └─ UserController.kt
 │  │  │           │  │  ├─ domain
-│  │  │           │  │  │  └─ entity
-│  │  │           │  │  │     └─ User.kt
+│  │  │           │  │  │  ├─ entity
+│  │  │           │  │  │  │  ├─ AuditLog.kt
+│  │  │           │  │  │  │  ├─ Role.kt
+│  │  │           │  │  │  │  ├─ User.kt
+│  │  │           │  │  │  │  └─ UserRole.kt
+│  │  │           │  │  │  └─ enums
+│  │  │           │  │  │     ├─ Permission.kt
+│  │  │           │  │  │     └─ RoleType.kt
 │  │  │           │  │  ├─ dto
 │  │  │           │  │  │  ├─ request
 │  │  │           │  │  │  │  ├─ LoginRequest.kt
@@ -280,12 +355,15 @@ gaming-server
 │  │  │           │  │  │     ├─ LoginResponse.kt
 │  │  │           │  │  │     └─ TokenRefreshResponse.kt
 │  │  │           │  │  ├─ repository
-│  │  │           │  │  │  └─ UserRepository.kt
+│  │  │           │  │  │  ├─ RoleRepository.kt
+│  │  │           │  │  │  ├─ UserRepository.kt
+│  │  │           │  │  │  └─ UserRoleRepository.kt
 │  │  │           │  │  ├─ security
 │  │  │           │  │  │  ├─ CustomUserDetailsService.kt
 │  │  │           │  │  │  └─ JwtAuthenticationFilter.kt
 │  │  │           │  │  └─ service
 │  │  │           │  │     ├─ AuthService.kt
+│  │  │           │  │     ├─ PermissionService.kt
 │  │  │           │  │     └─ UserService.kt
 │  │  │           │  └─ game
 │  │  │           │     ├─ domain
@@ -299,36 +377,13 @@ gaming-server
 │  │     ├─ application.yaml
 │  │     └─ db
 │  │        └─ migration
-│  │           └─ V1__init_schema.sql
+│  │           ├─ V1__init_schema.sql
+│  │           └─ V2__add_role_permission_tables.sql
 │  └─ test
 │     └─ kotlin
 │        └─ com
 │           └─ gaming
 │              └─ server
 │                 └─ GamingServerApplicationTests.kt
-└─ test-fix.ps1
-
+└─ test-final-english.ps1
 ```
-
-### 下一步开发计划
-
-根据 development-summary.md 文档，接下来应该：
-
-#### **短期目标：**
-
-- 游戏模块API（GameController/GameService）
-- 游戏数据管理和查询
-- 游戏分类和状态管理
-
-#### **中期目标：**
-
-- 交易模块（存款/提现）
-- 钱包余额管理
-- 游戏记录和投注记录
-
-#### **长期目标：**
-
-- 管理员后台功能
-- 数据统计和报表
-- WebSocket实时游戏
-- 支付渠道集成
