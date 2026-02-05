@@ -157,7 +157,7 @@ POST   /api/auth/test-login     # 测试登录接口
 ```text
 gaming-server
 ├─ docs
-│  ├─ development-summary-[day1].md
+│  ├─ development-summary.md
 │  ├─ development.md
 │  └─ gaming-server.md
 ├─ gradle
