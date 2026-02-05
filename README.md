@@ -5,3 +5,17 @@
 | 移动端 | admin 后台 | 服务端 |
 | --------- | --------- | --------- |
 | flutter | nextjs | spring boot |
+
+## **项目文档**
+
+| 移动端 | 开发文档 | 开发进度文档 |
+| --------- | --------- | --------- |
+| flutter | [开发详情](https://github.com/Skyler-May/app-dev-docs/blob/main/gaming-server/development.md) | [进度详情](https://github.com/Skyler-May/app-dev-docs/blob/main/gaming-server/development-summary.md) |
+
+| admin 后台 | 开发文档 | 开发进度文档 |
+| --------- | --------- | --------- |
+| nextjs | [开发详情](https://github.com/zhangyu-dev/flutter_doc) | [进度详情](https://github.com/zhangyu-dev/flutter_doc) |
+
+| 服务端 | 开发文档 | 开发进度文档 |
+| --------- | --------- | --------- |
+| spring boot | [开发详情](https://github.com/zhangyu-dev/flutter_doc) | [进度详情](https://github.com/zhangyu-dev/flutter_doc) |
