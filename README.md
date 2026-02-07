@@ -10,13 +10,13 @@
 
 | 移动端 | 开发文档 | 开发进度文档 |
 | --------- | --------- | --------- |
-| flutter | [开发详情](https://github.com/zhangyu-dev/flutter_doc) | [进度详情](https://github.com/zhangyu-dev/flutter_doc) |
+| flutter | [开发详情](https://github.com/Skyler-May/app-dev-docs/blob/main/gamingclub/development.md) | [进度详情](https://github.com/Skyler-May/app-dev-docs/blob/main/gamingclub/development-summary.md) |
 
 ### **admin 后台**
 
 | admin 后台 | 开发文档 | 开发进度文档 |
 | --------- | --------- | --------- |
-| nextjs | [开发详情](https://github.com/zhangyu-dev/flutter_doc) | [进度详情](https://github.com/zhangyu-dev/flutter_doc) |
+| nextjs | [开发详情](https://github.com/Skyler-May/app-dev-docs/blob/main/gaming-admin/development.md) | [进度详情](https://github.com/Skyler-May/app-dev-docs/blob/main/gaming-admin/development-summary.md) |
 
 ### **服务端**
 
